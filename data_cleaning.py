@@ -3,6 +3,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Read data
 brands_df = pd.read_csv('brands.csv')
@@ -34,6 +35,14 @@ print("Missing values in every column : \n" , receipts_df.isnull().sum())
 # Select essential fields
 selected_receipts_df = receipts_df[['id', 'dateScanned', 'purchasedItemCount', 'rewardsReceiptStatus', 'totalSpent', 'userId']]
 
+# Draw a box plot to detect if there are outliers
+selected_receipts_df.plot(kind = 'box', subplots = True, layout=(4, 3), sharex = False, sharey= False, figsize=(20, 20))
+plt.show()
+
+# Check if it makes sense that the more purchased items count, the more the total spent.
+# To make sure the outliers are not caused by some errors.
+selected_receipts_df[selected_receipts_df['purchasedItemCount']>300]
+
 # Clean receipt items table
 receipt_items_df.info()
 
@@ -44,13 +53,8 @@ print("Duplicated values in every columns : \n" , receipt_items_df.duplicated().
 # Select essential fields
 selected_receipt_items_df = receipt_items_df[['receiptId', 'barcode', 'userFlaggedBarcode', 'brandCode']]
 
-"""There is a data quality issue of incomplete information about the 'barcode' and 'userFlaggedBarcode' columns.
-The two columns seem to contain the same kind of information but separate in different fields,
-so I merged the data of these two columns based on taking the 'barcode' column as the main information.
-After that, I dropped missing rows that contained nulls in both 'barcode' and 'brandCode' columns.
-And fill a string 'missing' in the blank cell to group them successfully.
-There is another data quality issue of the inconsistent format in the 'barcode' column.
-The column contains string type and float type at the same time. After removing data with value = 4011, I thought the datatype may be all strings.
+"""There is a data quality issue of incomplete information about the 'barcode' and 'userFlaggedBarcode' columns. The two columns seem to contain the same kind of information but separate in different fields, so I merged the data of these two columns based on taking the 'barcode' column as the main information. After that, I dropped missing rows that contained nulls in both 'barcode' and 'brandCode' columns. And fill a string 'missing' in the blank cell to group them successfully.
+There is another data quality issue of the inconsistent format in the 'barcode' column. The column contains string type and float type at the same time. After removing data with value = 4011, I thought the datatype may be all strings.
 """
 
 # Combine infomation in 'barcode' and 'userFlaggedBarcode' and drop missing data
@@ -83,8 +87,7 @@ users_df.info()
 print("Duplicated values in id columns : \n" , users_df.duplicated(subset=['id']).sum())
 print("Duplicated values in specific columns : \n" , users_df.duplicated(subset=['id', 'createdDate']).sum())
 
-"""There is a data quality issue about duplicated data in the users data.
-There are multiple rows contain the same 'id' and 'createdDate', so I dropped them."""
+"""There is a data quality issue about duplicated data in the users data. There are multiple rows contain the same 'id' and 'createdDate', so I dropped them."""
 
 # Drop duplicated user data
 new_users_df = users_df.drop_duplicates(subset=['id', 'createdDate'], ignore_index=True)
