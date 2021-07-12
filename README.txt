@@ -7,7 +7,7 @@ First: Review Existing Unstructured Data and Diagram a New Structured Relational
 Check erDiagram.png
 
 Second: Write a query that directly answers a predetermined question from a business stakeholder
-Check data_preprocessing.py
+Check data_analysis.py
 
 Third: Evaluate Data Quality Issues in the Data Provided
 Check data_cleaning.py
