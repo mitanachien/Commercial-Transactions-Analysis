@@ -65,11 +65,6 @@ JOIN top_5_brands_previous_months;"""
 top_5_brands_comparation = pysqldf(q)
 top_5_brands_comparation
 
-q = """SELECT rewardsReceiptStatus, AVG(totalSpent) AS avgSpend FROM receipts_df
-GROUP BY rewardsReceiptStatus;"""
-out = pysqldf(q)
-out
-
 # When considering average spend from receipts with 'rewardsReceiptStatus’ of ‘Accepted’ or ‘Rejected’, which is greater?
 # Since there are no 'Accepted' column in 'rewardsReceiptStatus’, I think 'Finished' is kind of 'Accepted'.
 # The average spend with status of Finished(Accepted) is greater than Rejected.
